@@ -55,7 +55,11 @@ export class ShowBackground extends Action {
 			this.html = '';
 		} else if (typeof sc === 'object') {
 			console.log('ShowBackground is array');
-			this.value = `url(${this.engine.setting ('AssetsPath').root}/${this.engine.setting ('AssetsPath').scenes}/${sc[0]})`;
+			if (sc[0] !== "" ) {
+				this.value = `url(${this.engine.setting ('AssetsPath').root}/${this.engine.setting ('AssetsPath').scenes}/${sc[0]})`;			
+			} else {
+				this.value = "";
+			}
 			this.html = sc[1];
 		} else {
 			const rest = [background, ...classes].join (' ');
@@ -99,7 +103,9 @@ export class ShowBackground extends Action {
 		background.style ('background-color', 'initial');
 		background.style ('animation-duration', '');
 		console.log("ShowBackground.apply", this.property, this.value, this.html );
-		background.style (this.property, this.value);		
+		if ( this.value !== "" ) {
+			background.style (this.property, this.value);		
+		}
 		background.html( this.html );
 
 		const durationPosition = this.classes.indexOf ('duration');
