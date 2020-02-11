@@ -46,8 +46,17 @@ export class ShowBackground extends Action {
 		super ();
 		this.background = background;
 		this.property = 'background-image';
-		if (typeof this.engine.asset ('scenes', background) !== 'undefined') {
-			this.value = `url(${this.engine.setting ('AssetsPath').root}/${this.engine.setting ('AssetsPath').scenes}/${this.engine.asset ('scenes', background)})`;
+		console.log('read bg', this.engine.asset ('scenes', background) );
+		let sc = this.engine.asset ('scenes', background);
+		console.log('sc', typeof(sc), sc );
+		if (typeof sc === 'string') {
+			console.log('ShowBackground is string');
+			this.value = `url(${this.engine.setting ('AssetsPath').root}/${this.engine.setting ('AssetsPath').scenes}/${sc})`;
+			this.html = '';
+		} else if (typeof sc === 'object') {
+			console.log('ShowBackground is array');
+			this.value = `url(${this.engine.setting ('AssetsPath').root}/${this.engine.setting ('AssetsPath').scenes}/${sc[0]})`;
+			this.html = sc[1];
 		} else {
 			const rest = [background, ...classes].join (' ');
 			if (classes.indexOf ('with') > -1) {
@@ -86,11 +95,12 @@ export class ShowBackground extends Action {
 	apply () {
 		const background = this.engine.element ().find ('[data-ui="background"]');
 
-		this.engine.element ().find ('[data-ui="background"]').style ('background-image', 'initial');
-		this.engine.element ().find ('[data-ui="background"]').style ('background-color', 'initial');
-		this.engine.element ().find ('[data-ui="background"]').style ('animation-duration', '');
-
-		this.engine.element ().find ('[data-ui="background"]').style (this.property, this.value);
+		background.style ('background-image', 'initial');
+		background.style ('background-color', 'initial');
+		background.style ('animation-duration', '');
+		console.log("ShowBackground.apply", this.property, this.value, this.html );
+		background.style (this.property, this.value);		
+		background.html( this.html );
 
 		const durationPosition = this.classes.indexOf ('duration');
 
@@ -101,7 +111,6 @@ export class ShowBackground extends Action {
 		for (const newClass of this.classes) {
 			background.addClass (newClass);
 		}
-
 		return Promise.resolve ();
 	}
 

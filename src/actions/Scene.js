@@ -77,6 +77,7 @@ export class Scene extends Action {
 
 	constructor ([ show, type, scene, ...classes ]) {
 		super ();
+		console.log('Scene', show, type, scene, classes );
 		this.scene = scene;
 	}
 

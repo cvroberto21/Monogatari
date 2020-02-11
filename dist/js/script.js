@@ -63,7 +63,8 @@ monogatari.assets ('images', {
 
 // Define the backgrounds for each scene.
 monogatari.assets ('scenes', {
-
+	"intro" : [ "background.jpg", `<h1>Intro</h1>` ],
+	"test" :  "background2"
 });
 
 
@@ -78,7 +79,7 @@ monogatari.characters ({
 monogatari.script ({
 	// The game starts here.
 	'Start': [
-		'show scene #f7f6f6 with fadeIn',
+		'show scene intro with fadeIn',
 		'show notification Welcome',
 		{
 			'Input': {
@@ -104,6 +105,7 @@ monogatari.script ({
 				'Warning': 'You must enter a name!'
 			}
 		},
+		'show scene test',
 		'y Hi {{player.name}} Welcome to Monogatari!',
 		{
 			'Choice': {
